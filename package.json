@@ -1,0 +1,15 @@
+{
+  "name": "crn-assessment",
+  "version": "1.0.0",
+  "main": "server.js",
+  "author": "Cedric Amaya (@cedrium)",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "scripts": {
+    "start": "node --watch server.js"
+  }
+}
