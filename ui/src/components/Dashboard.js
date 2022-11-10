@@ -11,8 +11,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-import useSWR from 'swr';
-
 import ShiftsTable from './ShiftsTable';
 
 const style = {
@@ -50,13 +48,6 @@ export default function Dashboard() {
   const handleSave = (event) => {
     handleClose();
   };
-
-  const { data: shifts, error: shiftsError } = useSWR(
-    'http://localhost:9001/shifts',
-  );
-  const { data: nurses, error: nursesError } = useSWR(
-    'http://localhost:9001/nurses',
-  );
 
   return (
     <Container maxWidth='lg'>

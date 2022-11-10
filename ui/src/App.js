@@ -1,5 +1,6 @@
 import { SWRConfig } from 'swr';
 
+import { GlobalStoreProvider } from './context/GlobalStore';
 import Dashboard from './components/Dashboard';
 
 export default function App() {
@@ -23,7 +24,9 @@ export default function App() {
         },
       }}
     >
-      <Dashboard />
+      <GlobalStoreProvider>
+        <Dashboard />
+      </GlobalStoreProvider>
     </SWRConfig>
   );
 }

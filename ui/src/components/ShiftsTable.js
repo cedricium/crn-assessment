@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import useSWR from 'swr';
 import Alert from '@mui/material/Alert';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,13 +8,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+import { useGlobalStore } from '../context/GlobalStore';
+
 export default function ShiftsTable() {
-  const { data: shifts, error: shiftsError } = useSWR(
-    'http://localhost:9001/shifts',
-  );
-  const { data: nurses, error: nursesError } = useSWR(
-    'http://localhost:9001/nurses',
-  );
+  const { shifts, shiftsError, nurses } = useGlobalStore();
 
   const getNurseInfo = useCallback(
     (nurseId) => {
