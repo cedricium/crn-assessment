@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import Alert from '@mui/material/Alert';
 
 import request from '../libs/request';
+import validate from '../libs/validate';
 import { formatDate, formatNurseName } from '../utils';
 import { useGlobalStore } from '../context/GlobalStore';
+
 import DropdownMenu from './DropdownMenu';
 
 const style = {
@@ -26,6 +30,7 @@ const style = {
 export default function AssignmentModal({ open, onClose }) {
   const { shifts, nurses, updateShift } = useGlobalStore();
 
+  const [errors, setErrors] = useState([]);
   const [shift, setShift] = useState('');
   const [nurse, setNurse] = useState('');
   const handleChange = (event) => {
@@ -41,9 +46,21 @@ export default function AssignmentModal({ open, onClose }) {
     }
   };
 
-  const handleClose = () => {
+  useEffect(() => {
+    if (!nurse) return;
+
+    const errors = validate(shifts, shift, nurse);
+    setErrors(errors);
+  }, [nurse, shift]);
+
+  const reset = () => {
+    setErrors([]);
     setShift('');
     setNurse('');
+  };
+
+  const handleClose = () => {
+    reset();
     onClose();
   };
 
@@ -111,9 +128,23 @@ export default function AssignmentModal({ open, onClose }) {
           </Grid>
 
           <Grid item>
-            <Button variant='contained' disabled={!shift} onClick={handleSave}>
+            <Button
+              variant='contained'
+              disabled={!shift || Boolean(errors.length)}
+              onClick={handleSave}
+            >
               Save Assignment
             </Button>
+          </Grid>
+
+          <Grid item width='100%'>
+            <Stack sx={{ width: '100%' }} spacing={1}>
+              {errors.map((error) => (
+                <Alert key={error} severity='warning'>
+                  {error}
+                </Alert>
+              ))}
+            </Stack>
           </Grid>
         </Grid>
       </Box>
