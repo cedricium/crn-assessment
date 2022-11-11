@@ -9,6 +9,7 @@ const nurseList = JSON.parse(fs.readFileSync('nurse_list.json', 'utf8'));
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 /**
  * Returns a JSON list of the shifts in the facility

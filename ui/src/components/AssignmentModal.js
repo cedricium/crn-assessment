@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import MenuItem from '@mui/material/MenuItem';
 
+import request from '../request';
 import { useGlobalStore } from '../context/GlobalStore';
 import DropdownMenu from './DropdownMenu';
 
@@ -22,7 +23,7 @@ const style = {
 };
 
 export default function AssignmentModal({ open, onClose }) {
-  const { shifts, nurses } = useGlobalStore();
+  const { shifts, nurses, updateShift } = useGlobalStore();
 
   const [shift, setShift] = useState('');
   const [nurse, setNurse] = useState('');
@@ -39,14 +40,33 @@ export default function AssignmentModal({ open, onClose }) {
     }
   };
 
-  const handleSave = (event) => {
+  const handleClose = () => {
+    setShift('');
+    setNurse('');
     onClose();
+  };
+
+  const handleSave = async () => {
+    try {
+      const { shiftID, nurseID } = await request(`/shifts/${shift.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          nurseID: nurse.id,
+        }),
+      });
+
+      updateShift(shiftID, nurseID);
+      handleClose();
+    } catch (error) {
+      alert(error.message);
+      console.error(error);
+    }
   };
 
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       aria-labelledby='modal-modal-title'
       aria-describedby='modal-modal-description'
     >
@@ -90,7 +110,7 @@ export default function AssignmentModal({ open, onClose }) {
           </Grid>
 
           <Grid item>
-            <Button variant='contained' onClick={handleSave}>
+            <Button variant='contained' disabled={!shift} onClick={handleSave}>
               Save Assignment
             </Button>
           </Grid>

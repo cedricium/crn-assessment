@@ -1,19 +1,38 @@
-import { useContext, useMemo, createContext } from 'react';
+import { useState, useEffect, useContext, useMemo, createContext } from 'react';
 import useSWR from 'swr';
 
 const GlobalStoreContext = createContext({});
 
 export function GlobalStoreProvider(props) {
-  const { data: shifts, error: shiftsError } = useSWR(
-    'http://localhost:9001/shifts',
-  );
-  const { data: nurses, error: nursesError } = useSWR(
-    'http://localhost:9001/nurses',
-  );
+  const { data: shifts, error: shiftsError } = useSWR('/shifts');
+  const { data: nurses, error: nursesError } = useSWR('/nurses');
+
+  const [updatedShifts, setUpdatedShifts] = useState();
+  useEffect(() => setUpdatedShifts(shifts), [shifts]);
+
+  const updateShift = (shiftId, nurseId) => {
+    setUpdatedShifts((prev) => {
+      const shiftsCopy = [...prev];
+      const shiftIndex = shiftsCopy.findIndex((s) => s.id == String(shiftId));
+
+      const shift = shiftsCopy[shiftIndex];
+      shift.nurse_id = nurseId;
+
+      shiftsCopy.splice(shiftIndex, 1, shift);
+
+      return shiftsCopy;
+    });
+  };
 
   const value = useMemo(
-    () => ({ shifts, nurses, shiftsError, nursesError }),
-    [shifts, nurses],
+    () => ({
+      shifts: updatedShifts,
+      nurses,
+      shiftsError,
+      nursesError,
+      updateShift,
+    }),
+    [updatedShifts, shifts, nurses, updateShift],
   );
   return <GlobalStoreContext.Provider value={value} {...props} />;
 }
