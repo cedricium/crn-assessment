@@ -1,6 +1,6 @@
 import { SWRConfig } from 'swr';
 
-import request from './request';
+import request from './libs/request';
 import { GlobalStoreProvider } from './context/GlobalStore';
 import Dashboard from './components/Dashboard';
 

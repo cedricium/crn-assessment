@@ -8,20 +8,16 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+import { formatDate, formatNurseName } from '../utils';
 import { useGlobalStore } from '../context/GlobalStore';
 
 export default function ShiftsTable() {
   const { shifts, shiftsError, nurses } = useGlobalStore();
 
-  const getNurseInfo = useCallback(
-    (nurseId) => {
-      const matchingNurse = nurses?.find((nurse) => nurse.id === nurseId);
-      return matchingNurse
-        ? `${matchingNurse.first_name} ${matchingNurse.last_name} (${matchingNurse.qualification})`
-        : nurseId;
-    },
-    [nurses],
-  );
+  const getNurseInfo = (nurseId) => {
+    const matchingNurse = nurses?.find((nurse) => nurse.id === nurseId);
+    return matchingNurse ? formatNurseName(matchingNurse) : nurseId;
+  };
 
   if (shiftsError)
     return <Alert severity='error'>{shiftsError?.message}</Alert>;
@@ -47,8 +43,8 @@ export default function ShiftsTable() {
               <TableCell component='th' scope='row'>
                 {row.name}
               </TableCell>
-              <TableCell>{new Date(row.start).toLocaleString()}</TableCell>
-              <TableCell>{new Date(row.end).toLocaleString()}</TableCell>
+              <TableCell>{formatDate(row.start)}</TableCell>
+              <TableCell>{formatDate(row.end)}</TableCell>
               <TableCell>{row.qual_required}</TableCell>
               <TableCell>{getNurseInfo(row.nurse_id)}</TableCell>
             </TableRow>

@@ -6,7 +6,8 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import MenuItem from '@mui/material/MenuItem';
 
-import request from '../request';
+import request from '../libs/request';
+import { formatDate, formatNurseName } from '../utils';
 import { useGlobalStore } from '../context/GlobalStore';
 import DropdownMenu from './DropdownMenu';
 
@@ -87,8 +88,8 @@ export default function AssignmentModal({ open, onClose }) {
             >
               {shifts?.map((shift) => (
                 <MenuItem key={shift.id} value={shift}>
-                  {shift.name}: {new Date(shift.start).toLocaleString()}-
-                  {new Date(shift.end).toLocaleString()} ({shift.qual_required})
+                  {shift.name}: {formatDate(shift.start)}—
+                  {formatDate(shift.end)} ({shift.qual_required})
                 </MenuItem>
               ))}
             </DropdownMenu>
@@ -103,7 +104,7 @@ export default function AssignmentModal({ open, onClose }) {
             >
               {nurses?.map((nurse) => (
                 <MenuItem key={nurse.id} value={nurse}>
-                  {nurse.first_name} {nurse.last_name}, {nurse.qualification}
+                  {formatNurseName(nurse)}
                 </MenuItem>
               ))}
             </DropdownMenu>
