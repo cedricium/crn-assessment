@@ -1,11 +1,11 @@
 import { SWRConfig } from 'swr';
 
-import request from './libs/request';
-import { GlobalStoreProvider } from './context/GlobalStore';
+import request from '../libs/request';
+import { GlobalStoreProvider } from '../context/GlobalStore';
 
-import Dashboard from './components/Dashboard';
+import Dashboard from '../components/Dashboard';
 
-export default function App() {
+function Home() {
   return (
     <SWRConfig value={{ fetcher: request }}>
       <GlobalStoreProvider>
@@ -14,3 +14,5 @@ export default function App() {
     </SWRConfig>
   );
 }
+
+export default Home;

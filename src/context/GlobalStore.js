@@ -8,7 +8,9 @@ export function GlobalStoreProvider(props) {
   const { data: nurses, error: nursesError } = useSWR('/nurses');
 
   const [updatedShifts, setUpdatedShifts] = useState();
-  useEffect(() => setUpdatedShifts(shifts), [shifts]);
+  useEffect(() => {
+    shifts && setUpdatedShifts(shifts);
+  }, [shifts]);
 
   const updateShift = (shiftId, nurseId) => {
     setUpdatedShifts((prev) => {

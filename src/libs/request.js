@@ -1,7 +1,7 @@
-const BASE_API_URL = 'http://localhost:9001';
+const BASE_API_PREFIX = '/api';
 
 export default async function request(resource, config) {
-  const res = await fetch(BASE_API_URL + resource, {
+  const res = await fetch(BASE_API_PREFIX + resource, {
     headers: {
       'Content-Type': 'application/json',
     },
