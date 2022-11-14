@@ -33,7 +33,7 @@ export default function Dashboard() {
         </Grid>
 
         <ShiftsTable />
-        <AssignmentModal open={open} onClose={handleClose} />
+        {open ? <AssignmentModal open={open} onClose={handleClose} /> : null}
       </Box>
     </Container>
   );

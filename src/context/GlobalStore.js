@@ -7,21 +7,18 @@ export function GlobalStoreProvider(props) {
   const { data: shifts, error: shiftsError } = useSWR('/shifts');
   const { data: nurses, error: nursesError } = useSWR('/nurses');
 
-  const [updatedShifts, setUpdatedShifts] = useState();
-  useEffect(() => setUpdatedShifts(shifts), [shifts]);
+  const [updatedShifts, setUpdatedShifts] = useState([]);
+  useEffect(() => {
+    shifts && setUpdatedShifts(shifts);
+  }, [shifts, setUpdatedShifts]);
 
   const updateShift = (shiftId, nurseId) => {
-    setUpdatedShifts((prev) => {
-      const shiftsCopy = [...prev];
-      const shiftIndex = shiftsCopy.findIndex((s) => s.id == String(shiftId));
-
-      const shift = shiftsCopy[shiftIndex];
-      shift.nurse_id = nurseId;
-
-      shiftsCopy.splice(shiftIndex, 1, shift);
-
-      return shiftsCopy;
-    });
+    setUpdatedShifts((prev) =>
+      prev.map((shift) => {
+        if (String(shift.id) !== String(shiftId)) return shift;
+        return { ...shift, nurse_id: nurseId };
+      }),
+    );
   };
 
   const value = useMemo(
@@ -32,7 +29,7 @@ export function GlobalStoreProvider(props) {
       nursesError,
       updateShift,
     }),
-    [updatedShifts, shifts, nurses, updateShift],
+    [updatedShifts, shifts, nurses, shiftsError, nursesError, updateShift],
   );
   return <GlobalStoreContext.Provider value={value} {...props} />;
 }

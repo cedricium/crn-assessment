@@ -4,82 +4,30 @@ Assessment submission for: Cedric Amaya
 
 ## Getting Started
 
+This project has been configured using [Next.js](https://nextjs.org/).
+
 **Install Dependencies**
 
 In the root directory, run
 
 ```sh
 npm install
-
 # OR
-
 yarn install
 ```
 
-Next, navigate to the `ui/` directory and run the same, e.g.
+**Run the Application**
+
+Next, start the development server:
 
 ```sh
-cd ui/
-npm install
-
+npm run dev
 # OR
-
-yarn install
+yarn run dev
 ```
 
-**Start Application**
+Open http://localhost:3000 with your browser to see the result.
 
-Similar to installing the dependencies, we will need to run two commands to start both the backend Express server and the frontend React app. This will require two separate terminal windows.
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-To start the server, in the root directory, run the following in the first window:
-
-```sh
-npm start
-
-# OR
-
-yarn start
-```
-
-Then, in the other separate terminal window, navigate to the `ui/` directory and run the same command:
-
-```sh
-cd ui/
-npm start
-
-# OR
-
-yarn start
-```
-
-If successful, you should see something similar to the following output:
-
-```sh
-# first terminal window (backend)
-$ yarn start
-yarn run v1.22.19
-$ node --watch server.js
-Server is listening on port 9001
-```
-
-```sh
-# second terminal window (frontend)
-$ yarn start
-Compiled successfully!
-
-You can now view ui in the browser.
-
-  Local:            http://localhost:3000
-  On Your Network:  http://10.0.0.51:3000
-
-Note that the development build is not optimized.
-To create a production build, use yarn build.
-
-webpack compiled successfully
-```
-
-**Accessing Application**
-
-Backend: `http://localhost:9001`
-
-Frontend: `http://localhost:3000`
+The `pages/api` directory is mapped to /api/\*. Files in this directory are treated as API routes instead of React pages. API routes can be accessed on `/api/<path>`, e.g. http://localhost:3000/api/shifts or http://localhost:3000/api/nurses.

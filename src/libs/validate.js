@@ -21,12 +21,16 @@ const isAvailable = (shifts, desiredShift, desiredNurse) => {
   );
 
   const hasScheduleConflict = scheduledShifts.some((shift) => {
-    if (
-      new Date(shift.end) > new Date(desiredShift.start) ||
-      new Date(shift.start) < new Date(desiredShift.end)
-    ) {
-      return true;
-    }
+    const shiftStart = shift.start;
+    const shiftEnd = shift.end;
+    const desiredStart = desiredShift.start;
+    const desiredEnd = desiredShift.end;
+
+    return (
+      (shiftStart > desiredStart && shiftStart < desiredEnd) || // shift starts after desired
+      (desiredStart > shiftStart && desiredStart < shiftEnd) || // desired starts after shift
+      (shiftStart == desiredStart && shiftEnd == desiredEnd) // shifts are identical
+    );
   });
 
   return hasScheduleConflict ? false : true;
