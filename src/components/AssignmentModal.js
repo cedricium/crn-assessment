@@ -53,17 +53,6 @@ export default function AssignmentModal({ open, onClose }) {
     setErrors(errors);
   }, [nurse, shift]);
 
-  const reset = () => {
-    setErrors([]);
-    setShift('');
-    setNurse('');
-  };
-
-  const handleClose = () => {
-    reset();
-    onClose();
-  };
-
   const handleSave = async () => {
     try {
       const { shiftID, nurseID } = await request(`/shifts/${shift.id}`, {
@@ -74,7 +63,7 @@ export default function AssignmentModal({ open, onClose }) {
       });
 
       updateShift(shiftID, nurseID);
-      handleClose();
+      onClose();
     } catch (error) {
       alert(error.message);
       console.error(error);
@@ -84,7 +73,7 @@ export default function AssignmentModal({ open, onClose }) {
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={onClose}
       aria-labelledby='modal-modal-title'
       aria-describedby='modal-modal-description'
     >
