@@ -13,17 +13,12 @@ export function GlobalStoreProvider(props) {
   }, [shifts, setUpdatedShifts]);
 
   const updateShift = (shiftId, nurseId) => {
-    setUpdatedShifts((prev) => {
-      const shiftsCopy = [...prev];
-      const shiftIndex = shiftsCopy.findIndex((s) => s.id == String(shiftId));
-
-      const shift = shiftsCopy[shiftIndex];
-      shift.nurse_id = nurseId;
-
-      shiftsCopy.splice(shiftIndex, 1, shift);
-
-      return shiftsCopy;
-    });
+    setUpdatedShifts((prev) =>
+      prev.map((shift) => {
+        if (String(shift.id) !== String(shiftId)) return shift;
+        return { ...shift, nurse_id: nurseId };
+      }),
+    );
   };
 
   const value = useMemo(
