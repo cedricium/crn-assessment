@@ -18,7 +18,7 @@ export default function ShiftsTable() {
     return matchingNurse ? formatNurseName(matchingNurse) : nurseId;
   };
 
-  if (shiftsError)
+  if (shiftsError && shifts?.length === 0)
     return <Alert severity='error'>{shiftsError?.message}</Alert>;
 
   return (

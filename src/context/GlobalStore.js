@@ -7,10 +7,10 @@ export function GlobalStoreProvider(props) {
   const { data: shifts, error: shiftsError } = useSWR('/shifts');
   const { data: nurses, error: nursesError } = useSWR('/nurses');
 
-  const [updatedShifts, setUpdatedShifts] = useState();
+  const [updatedShifts, setUpdatedShifts] = useState([]);
   useEffect(() => {
     shifts && setUpdatedShifts(shifts);
-  }, [shifts]);
+  }, [shifts, setUpdatedShifts]);
 
   const updateShift = (shiftId, nurseId) => {
     setUpdatedShifts((prev) => {
@@ -34,7 +34,7 @@ export function GlobalStoreProvider(props) {
       nursesError,
       updateShift,
     }),
-    [updatedShifts, shifts, nurses, updateShift],
+    [updatedShifts, shifts, nurses, shiftsError, nursesError, updateShift],
   );
   return <GlobalStoreContext.Provider value={value} {...props} />;
 }
